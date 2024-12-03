@@ -1,21 +1,10 @@
 import requests
 import pandas as pd
-
-# API Key
-API_KEY = "5408ae53f88d25cb0814abb4f063f91d8df249eb"
-BASE_URL = "https://www.courtlistener.com/api/rest/v4/opinions/"
+from config import API_KEY, BASE_URL, DEFAULT_PARAMS, OUTPUT_FILE
 
 # Headers for authentication
 HEADERS = {
     "Authorization": f"Token {API_KEY}"
-}
-
-# Define parameters for filtering
-DEFAULT_PARAMS = {
-    "type": "lead",  # Fetch only lead opinions (can be modified)
-    "decision_date_min": "2020-01-01",
-    "decision_date_max": "2023-01-01",
-    "page_size": 100  # Maximum results per page
 }
 
 def fetch_opinions(params=DEFAULT_PARAMS):
@@ -45,7 +34,7 @@ def fetch_opinions(params=DEFAULT_PARAMS):
 
     return opinions
 
-def save_opinions_to_csv(opinions, filename="../data/opinions.csv"):
+def save_opinions_to_csv(opinions, filename=OUTPUT_FILE):
     """
     Saves the fetched opinions to a CSV file.
     

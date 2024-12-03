@@ -8,10 +8,10 @@ BASE_URL = "https://www.courtlistener.com/api/rest/v4/opinions/"
 
 # Default parameters for API requests
 DEFAULT_PARAMS = {
-    "type": "lead",  # Fetch only lead opinions
+    "type": "020lead",  # Use the correct value for Lead Opinion
     "decision_date_min": "2020-01-01",  # Adjust date range as needed
     "decision_date_max": "2023-01-01",
-    "page_size": 100  # Maximum results per page
+    "page_size": 10  # Maximum results per page
 }
 
 # Output file path for saving opinions
