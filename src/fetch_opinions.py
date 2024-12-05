@@ -26,8 +26,19 @@ def fetch_opinions(params=DEFAULT_PARAMS):
         
         if response.status_code == 200:
             data = response.json()
-            opinions.extend(data['results'])
-            next_url = data['next']  # Pagination link
+            
+            # Debugging to ensure API response is correct
+            print(f"Response contains {len(data['results'])} results.")
+            
+            # Check if 'results' exist in the response and add to opinions
+            if 'results' in data and data['results']:
+                opinions.extend(data['results'])
+            else:
+                print("No results found in this response. Exiting loop.")
+                break
+            
+            # Update the next URL for pagination
+            next_url = data.get('next')
         else:
             print(f"Failed to fetch data: {response.status_code}, {response.text}")
             break
@@ -50,13 +61,19 @@ def save_opinions_to_csv(opinions, filename=OUTPUT_FILE):
             "court": opinion.get("court"),
             "type": opinion.get("type"),
             "html_with_citations": opinion.get("html_with_citations"),
-            "citations": opinion.get("citations"),
+            "citations": "; ".join(citation.get("cite", "") for citation in opinion.get("citations", [])),
+            "url": opinion.get("url"),
         }
         for opinion in opinions
     ]
     
     # Create a DataFrame and save to CSV
     df = pd.DataFrame(processed_data)
+    
+    # Debugging: Print the first few rows to verify correctness
+    print("Preview of the data to be saved:")
+    print(df.head())
+    
     df.to_csv(filename, index=False)
     print(f"Data saved to {filename}")
 
